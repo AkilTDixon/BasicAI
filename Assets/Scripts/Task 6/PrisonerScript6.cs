@@ -27,6 +27,7 @@ public class PrisonerScript6 : MonoBehaviour
     }
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,13 +35,9 @@ public class PrisonerScript6 : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Follow()
     {
-        if (following)
-        {
-            if (!agent.isActiveAndEnabled)
-                agent.enabled = true;
-
-        }
+        if (!agent.isActiveAndEnabled)
+            agent.enabled = true;
     }
 }

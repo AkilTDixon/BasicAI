@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2585502320828682219}
   - component: {fileID: 592665350687817291}
   - component: {fileID: 998283044395384650}
+  - component: {fileID: 5177611067055891634}
   m_Layer: 3
   m_Name: Hero6
   m_TagString: Hero
@@ -32,7 +33,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.88, y: 5.72, z: 0.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -56,7 +56,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -94,21 +93,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4798211823857862127}
-  serializedVersion: 4
+  serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -122,17 +110,9 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4798211823857862127}
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &592665350687817291
@@ -148,10 +128,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 64
+  blockedMask:
+    serializedVersion: 2
+    m_Bits: 128
   maxSpeed: 2
   target: {fileID: 0}
   targetPath: {x: 0, y: 0, z: 0}
   Velocity: {x: 0, y: 0, z: 0}
+  pathCounter: 0
 --- !u!114 &998283044395384650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,17 +158,32 @@ MonoBehaviour:
   agent: {fileID: 592665350687817291}
   viewRadius: 15
   viewAngle: 70
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 64
-  blockedMask:
-    serializedVersion: 2
-    m_Bits: 16
+  pathPoints: []
+  pf: {fileID: 0}
   detectedBy: []
   detected: 0
   victory: 0
   wait: 0
   avoidance: 0
+  foundPath: 0
   closestGuardian: {fileID: 0}
   seenGuardian: {fileID: 0}
   avoidOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &5177611067055891634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4798211823857862127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fed65d4be18b924a8ba6f6f94865f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tarMask:
+    serializedVersion: 2
+    m_Bits: 256
+  rayDistance: 2
+  castWidth: 1
+  debugToggle: 0

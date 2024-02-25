@@ -13,26 +13,31 @@ public class AIBaseScript6 : MonoBehaviour
 
     [SerializeField] AIType type;
 
-
+    public LayerMask targetMask;
+    public LayerMask blockedMask;
 
     public float maxSpeed;
     public GameObject target;
     public Vector3 targetPath;
     public Vector3 Velocity;
-
-
+    public int pathCounter = 0;
+    private Rigidbody body;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        body = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        body.velocity = Vector3.zero;
+        body.angularVelocity = Vector3.zero;
         if (type == AIType.Hero || type == AIType.Prisoner)
         {
+
+
             float sp = maxSpeed;
             if (target)
             {
@@ -40,6 +45,7 @@ public class AIBaseScript6 : MonoBehaviour
 
                 if (type == AIType.Hero)
                 {
+
 
                     HeroScript6 hs = GetComponent<HeroScript6>();
 
@@ -67,16 +73,39 @@ public class AIBaseScript6 : MonoBehaviour
                                 else if (closestGuardian)
                                 {
                                     sp = closestGuardian.gameObject.GetComponent<AIBaseScript6>().maxSpeed;
-                                    targetPath = hs.GetBaseDirectionLine();
+
+                                    //I need to use the pathfinder to get a path back to the base
+
+                                    Pathfind(hs);
+                                    //targetPath = hs.GetBaseDirectionLine();
 
                                 }
                             }
                             else if (hs.strat == HeroScript6.Strategy.Hunt)
                             {
-                                if (closestGuardian)
+                                if (hs.HoldingObjects.Count == 0)
                                 {
-                                    sp = closestGuardian.gameObject.GetComponent<AIBaseScript6>().maxSpeed;
-                                    targetPath = hs.GetBaseDirectionLine();
+                                    if (closestGuardian)
+                                    {
+                                        GuardianScript6 gs = closestGuardian.GetComponent<GuardianScript6>();
+
+                                        float distToCapture = ((gs.transform.position - transform.position).magnitude - gs.captureRadius) * 0.6f;
+                                        //distToCapture = Mathf.Clamp(distToCapture, 0.001f, 1f);
+
+
+                                        sp = closestGuardian.gameObject.GetComponent<AIBaseScript6>().maxSpeed / distToCapture;
+
+                                        if (sp > maxSpeed)
+                                            sp = maxSpeed;
+                                        //I need to use the pathfinder to get a path back to the base
+
+                                        Pathfind(hs);
+                                        //targetPath = hs.GetBaseDirectionLine();
+                                    }
+                                }
+                                else
+                                {
+                                    Pathfind(hs);
                                 }
 
                             }
@@ -91,6 +120,10 @@ public class AIBaseScript6 : MonoBehaviour
                         {
                             if (hs.seenGuardian)
                                 targetPath = -Velocity;
+                        }
+                        else
+                        {
+                            Pathfind(hs);
                         }
                     }
                 }
@@ -128,7 +161,7 @@ public class AIBaseScript6 : MonoBehaviour
             GuardianScript6 gs = GetComponent<GuardianScript6>();
             Velocity.y = 0;
             targetPath = gs.GetTargetPath();
-
+            
 
             Vector3 steeringForce;
             Quaternion rot;
@@ -159,6 +192,79 @@ public class AIBaseScript6 : MonoBehaviour
 
         }
 
+    }
+
+    public void Pathfind(GuardianScript6 gs)
+    {
+        if (gs.foundPath)
+        {
+            if (pathCounter != gs.pathPoints.Count - 1)
+            {
+                int index = gs.pathPoints.Count - 1;
+                float mag1 = (transform.position - gs.pathPoints[index]).magnitude;
+                float mag2 = (gs.pathPoints[pathCounter] - gs.pathPoints[index]).magnitude;
+
+
+                if ((gs.pathPoints[pathCounter] - transform.position).magnitude <= 5f)
+                {
+                    RaycastHit hit1, hit2;
+
+
+
+                    if (Physics.Raycast(transform.position, (gs.pathPoints[pathCounter] - transform.position), Mathf.Infinity, blockedMask))
+                    {
+                        if ((gs.pathPoints[pathCounter] - transform.position).magnitude <= 2f)
+                            if (mag1 <= mag2)
+                                pathCounter++;
+                    }
+                    else if (mag1 <= mag2)
+                        pathCounter++;
+
+
+                }
+            }
+            /*            else
+                            if ((gs.pathPoints[pathCounter] - transform.position).magnitude <= 0.25f)
+                                pathCounter++;*/
+
+            if (pathCounter >= gs.pathPoints.Count)
+                pathCounter = 0;
+
+            targetPath = gs.pathPoints[pathCounter] - transform.position;
+        }
+        else if (!gs.foundPath)
+        {
+            pathCounter = 0;
+        }
+    }
+    private void Pathfind(HeroScript6 hs)
+    {
+        if (hs.foundPath)
+        {
+            if (pathCounter != hs.pathPoints.Count - 1)
+            {
+                int index = hs.pathPoints.Count - 1;
+                float mag1 = (transform.position - hs.pathPoints[index]).magnitude;
+                float mag2 = (hs.pathPoints[pathCounter] - hs.pathPoints[index]).magnitude;
+
+
+                if ((hs.pathPoints[pathCounter] - transform.position).magnitude <= 5f)
+                    if (mag1 <= mag2)
+                        pathCounter++;
+            }
+/*            else
+                if ((hs.pathPoints[pathCounter] - transform.position).magnitude <= 0.25f)
+                    pathCounter++;*/
+
+            if (pathCounter >= hs.pathPoints.Count)
+                pathCounter = 0;
+
+            targetPath = hs.pathPoints[pathCounter] - transform.position;
+        }
+        else if (!hs.foundPath)
+        {
+            pathCounter = 0;
+        }
     }
     private void Flee(GameObject from, float sp)
     {

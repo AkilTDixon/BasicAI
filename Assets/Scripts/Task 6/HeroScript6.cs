@@ -20,16 +20,16 @@ public class HeroScript6 : MonoBehaviour
     [SerializeField] public float viewAngle;
 
 
-    public LayerMask targetMask;
-    public LayerMask blockedMask;
 
-
+    public List<Vector3> pathPoints;
+    public PathfinderScript pf;
     private Vector3 baseDirection;
     public List<GameObject> detectedBy;
     public bool detected = false;
     public bool victory = false;
     public bool wait = false;
     public bool avoidance = false;
+    public bool foundPath = false;
     public GameObject closestGuardian;
 
     public GameObject seenGuardian;
@@ -41,10 +41,12 @@ public class HeroScript6 : MonoBehaviour
     {
         if (other.tag == "Prisoner")
         {
-
+            other.GetComponent<PrisonerScript6>().Follow();
             //agent.Velocity = Vector3.zero;
             HoldingObjects.Add(other.gameObject);
             agent.target = BasePoint;
+            foundPath = false;
+            pathPoints.Clear();
         }
         if (other.tag == "Base")
         {
@@ -59,7 +61,8 @@ public class HeroScript6 : MonoBehaviour
                 }
                 HoldingObjects.Clear();
 
-
+                foundPath = false;
+                pathPoints.Clear();
                 GetClosestPrisoner();
             }
         }
@@ -72,11 +75,24 @@ public class HeroScript6 : MonoBehaviour
     {
         return baseDirection;
     }
+    public void GetPathToBase()
+    {
+        agent.target = BasePoint;
+        foundPath = false;
+        pathPoints.Clear();
+        agent.pathCounter = 0;
+        foundPath = pf.Prelim(agent.target.transform.position, out pathPoints);
+        pathPoints.Add(BasePoint.transform.position);
 
+        Vector3 d = (pathPoints[pathPoints.Count - 1] - pathPoints[pathPoints.Count - 2]).normalized;
+
+        pathPoints.Add(BasePoint.transform.position + d * 2f);
+    }
     // Start is called before the first frame update
     void Start()
     {
         h = new Helper();
+        pf = GetComponent<PathfinderScript>();
         StartCoroutine(viewRoutine());
         GetClosestPrisoner();
     }
@@ -136,7 +152,11 @@ public class HeroScript6 : MonoBehaviour
 
         if (PrisonerObjects.Count == 0)
         {
+            GameInfoScript.Instance.GameOver("Task 6");
             agent.target = BasePoint;
+            foundPath = true;
+            Destroy(gameObject);
+            
             return;
         }
 
@@ -159,7 +179,15 @@ public class HeroScript6 : MonoBehaviour
 
     private void viewCheck()
     {
-        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+        
+        if (!foundPath)
+        {
+            //foundPath = pf.StartPath(agent.target.transform.position, out pathPoints);
+            foundPath = pf.Prelim(agent.target.transform.position, out pathPoints);
+        }
+
+
+        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, viewRadius, agent.targetMask);
 
         if (rangeChecks.Length != 0)
         {
@@ -198,7 +226,7 @@ public class HeroScript6 : MonoBehaviour
                 Vector3 direction = ((visible[index].position - transform.position).normalized);
 
 
-                if (!Physics.Raycast(transform.position, direction, dist, blockedMask))
+                if (!Physics.Raycast(transform.position, direction, dist, agent.blockedMask))
                 {
                     //Sees a guardian
 
@@ -508,7 +536,15 @@ public class HeroScript6 : MonoBehaviour
         yield return new WaitForSeconds(2);
         detectedBy.Remove(g);
         if (detectedBy.Count == 0)
+        {
             detected = false;
+            if (HoldingObjects.Count == 0)
+            {
+                foundPath = false;
+                pathPoints.Clear();
+                GetClosestPrisoner();
+            }
+        }
     }
 
 }

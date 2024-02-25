@@ -14,9 +14,8 @@ public class GuardianScript6 : MonoBehaviour
     private Helper h = new Helper();
     public float angle, radius;
 
-    public LayerMask targetMask;
-    public LayerMask blockedMask;
-    public LayerMask collisionMask;
+    public List<Vector3> pathPoints;
+    public PathfinderScript pf;
 
     private bool foundPlayer;
 
@@ -31,9 +30,11 @@ public class GuardianScript6 : MonoBehaviour
     private Vector3 targetPath;
     public bool wander = false;
     public bool avoiding = false;
+    public bool foundPath = false;
     private HeroScript6 hs;
     public float captureRadius;
     private float maxSpeed;
+    
 
     public Vector3 viewLine1;
     public Vector3 viewLine2;
@@ -43,8 +44,12 @@ public class GuardianScript6 : MonoBehaviour
 
     public float maxT1, maxT2, minT1, minT2;
 
+
+
+
     void Start()
     {
+        pf = GetComponent<PathfinderScript>();
         maxSpeed = GetComponent<AIBaseScript6>().maxSpeed;
         captureRadius = radius / 4f;
         hs = HeroObject.GetComponent<HeroScript6>();
@@ -55,73 +60,83 @@ public class GuardianScript6 : MonoBehaviour
     {
         if (hs.victory)
             BaseHit();
-
-        if (wander)
+        if (!foundPath)
         {
-            wanderTimer += Time.deltaTime;
+            if (wander)
+            {
+                wanderTimer += Time.deltaTime;
 
 
-            // TODO: calculate linear component
+                // TODO: calculate linear component
 
-            if (lastWanderDirection == Vector3.zero)
-                lastWanderDirection = transform.forward.normalized * maxSpeed;
+                if (lastWanderDirection == Vector3.zero)
+                    lastWanderDirection = transform.forward.normalized * maxSpeed;
 
-            if (lastPath == Vector3.zero)
-                lastPath = transform.forward;
+                if (lastPath == Vector3.zero)
+                    lastPath = transform.forward;
 
-            targetPath = lastPath;
+                targetPath = lastPath;
 
-            if (wanderTimer > wanderInterval)
+                if (wanderTimer > wanderInterval)
+                {
+
+                    if (!ProtectPosition)
+                        Destroy(gameObject);
+                    else
+                    {
+                        float angle = (Random.value - Random.value) * wanderDegreesDelta;
+                        Vector3 direction = Quaternion.AngleAxis(angle, Vector3.up) * lastWanderDirection.normalized;
+                        Vector3 circleCenter = ProtectPosition.position + lastPath;
+                        circleCenter.y = transform.position.y;
+                        Vector3 destination = circleCenter + direction.normalized;
+                        targetPath = destination - transform.position;
+                        targetPath = targetPath.normalized * maxSpeed;
+
+
+
+                        //Debug.DrawRay(r.origin, r.direction, Color.red, wanderInterval);
+
+
+
+                        lastPath = targetPath;
+                        lastWanderDirection = direction;
+                        wanderTimer = 0;
+                    }
+
+                }
+            }
+            else if (avoiding)
             {
 
-                if (!ProtectPosition)
-                    Destroy(gameObject);
-                else
-                {
-                    float angle = (Random.value - Random.value) * wanderDegreesDelta;
-                    Vector3 direction = Quaternion.AngleAxis(angle, Vector3.up) * lastWanderDirection.normalized;
-                    Vector3 circleCenter = ProtectPosition.position + lastPath;
-                    circleCenter.y = transform.position.y;
-                    Vector3 destination = circleCenter + direction.normalized;
-                    targetPath = destination - transform.position;
-                    targetPath = targetPath.normalized * maxSpeed;
-
-
-
-                    //Debug.DrawRay(r.origin, r.direction, Color.red, wanderInterval);
-
-
-
-                    lastPath = targetPath;
-                    lastWanderDirection = direction;
-                    wanderTimer = 0;
-                }
+                targetPath = avoidPath;
 
             }
-        }
-        else if (avoiding)
-        {
+            else
+            {
+                if (!HeroObject)
+                    Destroy(gameObject);
 
-            targetPath = avoidPath;
-
-        }
-        else
-        {
-
-            targetPath = HeroObject.transform.position - transform.position;
+                targetPath = HeroObject.transform.position - transform.position;
+            }
         }
     }
 
 
     public Vector3 GetTargetPath()
     {
+        if (foundPath)
+        {
+            agent.Pathfind(this);
+            targetPath = agent.targetPath;
+        }
+
         return targetPath;
     }
     private void captureCheck()
     {
 
 
-        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, captureRadius, targetMask);
+        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, captureRadius, agent.targetMask);
 
 
         if (rangeChecks.Length != 0)
@@ -132,7 +147,7 @@ public class GuardianScript6 : MonoBehaviour
             float dist = Vector3.Distance(transform.position, target.position);
 
             //Player captured
-            if (!Physics.Raycast(transform.position, direction, dist, blockedMask))
+            if (!Physics.Raycast(transform.position, direction, dist, agent.blockedMask))
             {
                 SceneManager.LoadScene("Task 6");
             }
@@ -142,10 +157,14 @@ public class GuardianScript6 : MonoBehaviour
     private void viewCheck()
     {
 
+        if ((ProtectPosition.position - transform.position).magnitude < 5)
+        {
+            foundPath = false;
+            pathPoints.Clear();
+        }
 
-
-
-        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
+        
+        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, agent.targetMask);
 
         //the cone extents
         Vector3 angle1 = h.DirectionFromAngle(transform.eulerAngles.y, -angle / 2f);
@@ -180,28 +199,30 @@ public class GuardianScript6 : MonoBehaviour
 
 
 
-
+        //If it detects something in its Circle
         if (rangeChecks.Length != 0)
         {
             Transform target = rangeChecks[0].transform;
 
             Vector3 direction = (target.position - transform.position).normalized;
 
-            //the cone
+            //If the detected thing is within the Cone of vision
             if (Vector3.Angle(transform.forward, direction) < angle / 2f)
             {
                 float dist = Vector3.Distance(transform.position, target.position);
 
                 //Handles.color = Color.yellow;
 
-
-                if (!Physics.Raycast(transform.position, direction, dist, blockedMask))
+                //If the detected thing isn't blocked by a Wall
+                if (!Physics.Raycast(transform.position, direction, dist, agent.blockedMask))
                 {
+                    //If it hasn't already detected the player previously
                     if (!foundPlayer)
                     {
 
                         hs.detected = true;
-                        hs.SetBaseDirectionLine();
+                        if (hs.HoldingObjects.Count == 0)
+                            hs.GetPathToBase();
                         hs.detectedBy.Add(gameObject);
 
                     }
@@ -209,11 +230,14 @@ public class GuardianScript6 : MonoBehaviour
                     foundPlayer = true;
 
                 }
-                else
+                else //If the detected thing is blocked by a wall
                 {
 
+                    //If the detected thing is blocked by a wall but the player was previously detected
                     if (foundPlayer)
                     {
+                        if ((ProtectPosition.position - transform.position).magnitude >= 5 && !foundPath)
+                            foundPath = pf.Prelim(ProtectPosition.position, out pathPoints);
                         hs.StartCoroutine(hs.fleeState(gameObject));
                     }
 
@@ -224,7 +248,7 @@ public class GuardianScript6 : MonoBehaviour
                     wander = true;
                 }
             }
-            else
+            else //If the detected thing isn't within the Cone of vision
             {
                 if (foundPlayer)
                 {
@@ -236,10 +260,13 @@ public class GuardianScript6 : MonoBehaviour
                 foundPlayer = false;
             }
         }
-        else if (foundPlayer)
+        else if (foundPlayer) //If nothing was detected in the circle, and the player was previously found
         {
             /*            hs.detected = false;
                         hs.detectedBy.Remove(gameObject);*/
+            if ((ProtectPosition.position - transform.position).magnitude >= 5 && !foundPath)
+                foundPath = pf.Prelim(ProtectPosition.position, out pathPoints);
+
             hs.StartCoroutine(hs.fleeState(gameObject));
             wander = true;
             foundPlayer = false;
@@ -261,6 +288,16 @@ public class GuardianScript6 : MonoBehaviour
                         StartCoroutine(avoidCollision());
                     }
                 }
+                else if (collisionChecks[i].tag == "Blocker")
+                {
+                    if (Physics.Raycast(transform.position, (ProtectPosition.position - transform.position), Mathf.Infinity, agent.blockedMask))
+                    {
+                        if (!foundPath)
+                        {
+                            foundPath = pf.Prelim(ProtectPosition.position, out pathPoints);
+                        }
+                    }
+                }
             }
 
 
@@ -276,8 +313,15 @@ public class GuardianScript6 : MonoBehaviour
         if (hs.detectedBy.Count == 0)
         {
             hs.detected = false;
-            if (hs.strat == HeroScript6.Strategy.Hunt)
+            hs.foundPath = false;
+            hs.pathPoints.Clear();
+            hs.GetClosestPrisoner();
+/*            if (hs.strat == HeroScript6.Strategy.Hunt)
+            {
+                hs.foundPath = false;
+                hs.pathPoints.Clear();
                 hs.GetClosestPrisoner();
+            }*/
         }
         GameInfoScript.Instance.GuardianDestroyed();
         Destroy(gameObject);

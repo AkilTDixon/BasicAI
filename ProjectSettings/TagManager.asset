@@ -8,6 +8,7 @@ TagManager:
   - Base
   - Hero
   - Guardian
+  - Blocker
   layers:
   - Default
   - TransparentFX
@@ -16,9 +17,9 @@ TagManager:
   - Water
   - UI
   - Guardian
-  - 
-  - 
-  - 
+  - Blocker
+  - Prisoner
+  - Player
   - 
   - 
   - 
