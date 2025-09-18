@@ -130,12 +130,12 @@ Assets/
 
 ## 🎓 Learning Outcomes
 
-This project demonstrates:
+This project helped provide experience with:
 - **AI Programming Fundamentals**: Steering behaviors, state machines, and decision trees
 - **Pathfinding Algorithms**: Custom implementation of obstacle avoidance systems
 - **Multi-Agent Systems**: Coordination between multiple AI entities
 - **Game AI Design**: Balancing challenge and player experience
-- **Unity Engine Experience**: Advanced scripting and component systems
+- **Unity Engine**: Advanced scripting and component systems
 
 ## 🚀 Getting Started
 
