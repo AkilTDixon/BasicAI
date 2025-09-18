@@ -6,7 +6,9 @@ The goal was to learn to program AI functionality in the Unity Engine, applying 
 
 PHASE 1 - Simple Seek Behavior
 
+
 https://github.com/user-attachments/assets/3d3de59f-f64b-466d-9cca-1fadfa11abde
+
 
 The Hero Object (Green) seeks out the Prisoner Object (Blue). Once reached, the Hero Object seeks the Goal (Red)
 
