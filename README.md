@@ -7,7 +7,9 @@ The goal was to learn to program AI functionality in the Unity Engine, applying 
 PHASE 1 - Simple Seek Behavior
 
 
-https://github.com/user-attachments/assets/3d3de59f-f64b-466d-9cca-1fadfa11abde
+
+https://github.com/user-attachments/assets/4770e20c-f693-484b-ac9c-8c5de616d0f7
+
 
 
 The Hero Object (Green) seeks out the Prisoner Object (Blue). Once reached, the Hero Object seeks the Goal (Red)
@@ -17,7 +19,8 @@ PHASE 2 - Custom Pathfinding
 
 
 
-https://github.com/user-attachments/assets/9c06503c-ad37-447d-bcbe-f37f693e3350
+https://github.com/user-attachments/assets/4179c51b-15e7-4c98-abf3-e9dcc63f3512
+
 
 
 While Unity has its own built-in method for implementing pathfinding, I created my own custom method for finding an obstacle-free path to a specific point.
