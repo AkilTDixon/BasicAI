@@ -28,7 +28,7 @@ This project showcases the evolution of AI behaviors from basic seek mechanics t
 
 https://github.com/user-attachments/assets/4770e20c-f693-484b-ac9c-8c5de616d0f7
 
-The Hero Object (Green) demonstrates fundamental seek behavior, pursuing the Prisoner Object (Blue). Upon reaching the prisoner, the hero then seeks the Goal (Red), establishing the basic AI movement foundation.
+The Hero Object (Green) has fundamental seek behavior, pursuing the Prisoner Object (Blue). Upon reaching the prisoner, the hero then seeks the Goal (Red), establishing the basic AI movement foundation.
 
 **Key Concepts:**
 - Basic seek steering behavior
