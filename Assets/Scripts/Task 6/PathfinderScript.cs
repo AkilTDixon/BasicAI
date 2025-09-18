@@ -91,9 +91,6 @@ public class PathfinderScript : MonoBehaviour
     //Non-recursive function
     public bool StartPath(Vector3 targetPosition, out List<Vector3> pathPoints)
     {
-
-
-
         bool foundPrisoner = false;
         pathPoints = new List<Vector3>();
 

@@ -180,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -279,7 +279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -485,7 +485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -554,7 +554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -716,7 +716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -785,7 +785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -854,7 +854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3473558470646426887, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: castWidth
@@ -1015,7 +1015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -1314,7 +1314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -1383,7 +1383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -1452,7 +1452,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -1521,7 +1521,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -1590,7 +1590,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -1875,7 +1875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject
@@ -2002,6 +2002,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 2017255888}
+  timerText: {fileID: 0}
+  heroObjects: []
+  playerObject: {fileID: 0}
+  guardianHolders: []
+  guardianObject: {fileID: 0}
+  GameOverHolder: {fileID: 0}
+  VictoryHolder: {fileID: 0}
+  ButtonsHolder: {fileID: 0}
   score: 0
 --- !u!1001 &1970689234
 PrefabInstance:
@@ -2060,7 +2068,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 878929234030064919, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814447238520455773, guid: 45ace9f4d03de0542ab0488804e57b9f, type: 3}
       propertyPath: HeroObject

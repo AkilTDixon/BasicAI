@@ -193,9 +193,7 @@ public class HeroScript7 : MonoBehaviour
             if (Physics.SphereCast(transform.position, pf.castWidth, (pathPoints[agent.pathCounter] - transform.position), out ht, (pathPoints[agent.pathCounter] - transform.position).magnitude, agent.blockedMask))
             {
                 if (detected)
-                {
                     GetPathToBase();
-                }
                 else
                 {
                     foundPath = false;
@@ -543,7 +541,6 @@ public class HeroScript7 : MonoBehaviour
 
         while (true)
         {
-
             yield return new WaitForSeconds(0.2f);
             viewCheck();
         }
