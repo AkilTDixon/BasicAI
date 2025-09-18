@@ -23,7 +23,7 @@ https://github.com/user-attachments/assets/4179c51b-15e7-4c98-abf3-e9dcc63f3512
 
 
 
-While Unity has its own built-in method for implementing pathfinding, I created my own custom method for finding an obstacle-free path to a specific point.
+While Unity has its own built-in method for implementing pathfinding, I created my own custom method for finding an obstacle-free path to a specific point using recursive raycasting.
 
 
 
