@@ -40,7 +40,11 @@ Finally, once an uninterrupted path is found, the apex points of each alternatin
 
 PHASE 3 - Dynamic Walls and Guardians
 
-https://github.com/user-attachments/assets/a251f5da-5529-43b2-9250-c5ede8cf1a32
+
+
+https://github.com/user-attachments/assets/fd1a4d60-36fb-446e-a03e-2b5e5dc7252c
+
+
 
 
 The Hero Object (Green) is faced with moving walls which occasionally obstruct its view. On the occasion that an object appears in the middle of its path, the Hero Object will course correct and find a new unobstructed path to the target.
